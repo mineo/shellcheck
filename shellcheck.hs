@@ -35,6 +35,7 @@ import Data.Bits
 import Data.Char
 import Data.Functor
 import Data.Either
+import Data.List
 import qualified Data.Map as Map
 import Data.Maybe
 import Data.Monoid
@@ -82,7 +83,7 @@ options = [
         (OptArg (maybe (Flag "color" "always") (Flag "color")) "WHEN")
         "Use color (auto, always, never)",
     Option "s" ["shell"]
-        (ReqArg (Flag "shell") "SHELLNAME") "Specify dialect (sh,bash,dash,ksh)",
+        (ReqArg (Flag "shell") "SHELLNAME") ("Specify dialect (" ++ (intercalate ", " shellNames) ++ ")"),
     Option "x" ["external-sources"]
         (NoArg $ Flag "externals" "true") "Allow 'source' outside of FILES.",
     Option "V" ["version"]

@@ -1,6 +1,7 @@
 module ShellCheck.Data where
 
 import ShellCheck.Interface
+import qualified Data.Map as Map
 import Data.Version (showVersion)
 import Paths_ShellCheck (version)
 
@@ -96,14 +97,19 @@ unaryTestOps = [
     "-o", "-v", "-R"
   ]
 
+validShells :: Map.Map String Shell
+validShells = Map.fromList [
+        ("sh"   , Sh),
+        ("bash" , Bash),
+        ("dash" , Dash),
+        ("ash"  , Dash),
+        ("ksh"  , Ksh),
+        ("ksh88", Ksh),
+        ("ksh93", Ksh)
+  ]
+
+shellNames :: [String]
+shellNames = Map.keys validShells
+
 shellForExecutable :: String -> Maybe Shell
-shellForExecutable name =
-    case name of
-        "sh"    -> return Sh
-        "bash"  -> return Bash
-        "dash"  -> return Dash
-        "ash"   -> return Dash -- There's also a warning for this.
-        "ksh"   -> return Ksh
-        "ksh88" -> return Ksh
-        "ksh93" -> return Ksh
-        otherwise -> Nothing
+shellForExecutable name = Map.lookup name validShells
